@@ -20,8 +20,9 @@
 
 ## 文档
 
+- **CC Switch 一键导入**：<https://yuzhideep.cn/ccswitch/>（Claude Code / Codex；也可在控制台令牌行末「⋯」→「CC Switch」直接导入）
 - [README](./README.md)：完整接入文档（产品定义、快速开始、模型价格、接口、错误码、FAQ）。
-- [快速开始](./docs/quickstart.md)：从注册到第一條请求，10 分钟。
+- [快速开始](./docs/quickstart.md)：从注册到第一条请求，10 分钟。
 - [接口参考](./docs/api-reference.md)：请求/响应字段、SSE、工具调用。
 - [模型与价格](./docs/models-and-pricing.md)：价目示例、计费公式、选型建议。
 - [错误码](./docs/errors.md)：状态码与 `code` 对照、重试策略。
