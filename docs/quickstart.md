@@ -81,7 +81,11 @@ const stream = await client.chat.completions.create({
 for await (const chunk of stream) process.stdout.write(chunk.choices[0]?.delta?.content ?? '');
 ```
 
-## 第 5 步：上线前检查清单
+## 第 5 步：导入 CC Switch（可选）
+
+用 Claude Code / Codex 的，可以在控制台「令牌 / API Keys」页点令牌行末「⋯」→「CC Switch」，选客户端与主模型后一键导入；也可以打开 <https://yuzhideep.cn/ccswitch/> 粘贴令牌生成 `ccswitch://` 链接。Key 只在浏览器本地拼接，不上传服务器。
+
+## 第 6 步：上线前检查清单
 
 - [ ] 令牌只放在服务端环境变量里，**没有**出现在前端 bundle、Git 或日志里。
 - [ ] 令牌设了额度上限和模型范围；生产与测试用两枚不同令牌。
