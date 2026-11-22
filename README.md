@@ -3,7 +3,7 @@
 > 一个 OpenAI 兼容入口，调用 GLM、DeepSeek、Kimi 等 63 个在售模型：国产模型官方价 **5 折**，海外文本 **1.8 折起**，生图低至 **¥0.05/张**。
 
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="880" alt="小豆AI大模型聚合 接口平台：一个 OpenAI 兼容地址调用国产与海外大模型，国产 5 折、按 token 计费">
+  <img src="./assets/readme/hero.svg" width="880" alt="小豆AI大模型聚合 接口平台：一个 OpenAI 兼容地址调用 63 个在售模型，国产 5 折、海外文本 1.8 折起、生图 ¥0.05/张起">
 </p>
 
 **价格一眼看完**：国产模型官方价 **5 折** ｜ 海外文本 **1.8 折起** ｜ 生图 **¥0.05/张起** ｜ 视频 **¥2.25/条起** ｜ 免费模型 `hy4flash-free` **¥0**
