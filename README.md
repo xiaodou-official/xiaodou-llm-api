@@ -91,6 +91,7 @@ CC Switch 是管理 Claude Code / Codex 供应商的开源工具（[ccswitch.io]
 
 - Claude Code 用本平台的 Claude 系列模型可直接选；用 GLM、DeepSeek 等非 Claude 模型时，选对应模型即可。
 - Codex 建议选 `gpt-6-sol` 或 `gpt-6.1-sol`。
+- Gemini CLI 暂不支持（网关没有 Gemini 原生端点），请选 Claude Code 或 Codex。
 - 原生深链接不带余额查询脚本，卡片上不显示余额；余额以控制台为准。
 
 ## 支持哪些模型
