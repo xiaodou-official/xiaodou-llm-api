@@ -4,13 +4,13 @@
   <rect width="880" height="220" fill="#121110"/>
   <rect x="0.5" y="0.5" width="879" height="219" fill="none" stroke="#2A2724"/>
   <text x="48" y="78" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="30" font-weight="600" fill="#EDE9E3">小豆AI大模型聚合 接口平台</text>
-  <text x="48" y="116" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="16" fill="#A8A29A">一个 OpenAI 兼容入口，调用 GLM / DeepSeek / Kimi；国产模型官方价 5 折，按 token 结算</text>
+  <text x="48" y="116" font-family="PingFang SC, Noto Sans SC, sans-serif" font-size="16" fill="#A8A29A">一个 OpenAI 兼容入口：国产 5 折 · 海外文本 1.8 折起 · 生图 ¥0.05/张起</text>
   <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13.5" fill="#F3E7E2">
     <rect x="48" y="146" width="330" height="38" rx="8" fill="#201E1A" stroke="#3A352F"/>
     <text x="64" y="170">base_url = https://yuzhideep.cn/v1</text>
     <rect x="394" y="146" width="212" height="38" rx="8" fill="#C4553B"/>
     <text x="410" y="170" fill="#14120F">国产模型 ×0.5</text>
     <rect x="622" y="146" width="210" height="38" rx="8" fill="#201E1A" stroke="#3A352F"/>
-    <text x="638" y="170" fill="#A8A29A">海外文本 1.8 折起</text>
+    <text x="638" y="170" fill="#A8A29A">生图 ¥0.05/张起</text>
   </g>
 </svg>
