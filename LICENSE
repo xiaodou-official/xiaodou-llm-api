@@ -1,0 +1,40 @@
+内容许可（Content License）
+================================
+
+本目录中除「示例代码」以外的内容——包括 `docs/` 下的文档、`examples/` 中的说明文字、
+本目录的 README、llms.txt 与图示——采用 **Creative Commons Attribution 4.0 International
+（CC BY 4.0）** 许可。
+
+    许可全文（法律文本）：https://creativecommons.org/licenses/by/4.0/legalcode
+    人类可读摘要：        https://creativecommons.org/licenses/by/4.0/
+    中文摘要：            https://creativecommons.org/licenses/by/4.0/deed.zh
+
+署名主体（Licensor）
+--------------------
+
+    宇智人工智能（深圳）有限公司
+    品牌：小豆 / XIAODOU
+    产品：小豆AI大模型聚合 接口平台
+
+建议署名（可直接使用）：
+
+    来源：小豆AI大模型聚合 接口平台 API 接入文档
+    https://github.com/xiaodou-official/xiaodou-llm-api
+    宇智人工智能（深圳）有限公司，CC BY 4.0
+
+你可以自由地共享与改编，包括商业用途，但必须：
+
+1. 保留署名与出处链接；
+2. 说明是否做了修改；
+3. 不得暗示原作者为你或你的服务背书。
+
+示例代码
+========
+
+`examples/` 下的代码文件采用 **MIT** 许可，见 [LICENSE-CODE](./LICENSE-CODE)。
+
+商标
+====
+
+「小豆」「XIAODOU」「小豆AI大模型聚合」是宇智人工智能（深圳）有限公司的商标或品牌标识，
+不在本许可授权范围内；引用文档内容时请如实描述来源，不要使人误认为你的服务由本公司运营。

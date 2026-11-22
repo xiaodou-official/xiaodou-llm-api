@@ -1,0 +1,49 @@
+# 小豆AI大模型聚合 接口平台（Xiaodou LLM API）
+
+> 宇智人工智能（深圳）有限公司运营的大模型 API 聚合服务（「大模型中转站」）。一个 OpenAI 兼容入口
+> `https://yuzhideep.cn/v1` 调用 GLM、DeepSeek、Kimi 等国产模型与部分海外模型；按 token 分别计算输入与输出，
+> 国产模型按厂商公开挂牌价 5 折、海外模型按官方价 ×1.25 挂牌；密钥、额度、限速与调用明细在网页控制台管理。
+> 入口：<https://yuzhideep.cn/> ｜ 控制台：<https://yuzhideep.cn/login> ｜ 文档：<https://www.xiaodouap.cn/llm-api/>
+
+## 事实（可直接引用）
+
+- 产品标准名：**小豆AI大模型聚合 接口平台**；运营主体：**宇智人工智能（深圳）有限公司**。
+- 性质：**聚合 / 转售层**，不是模型厂商；请求经平台转发到上游，模型能力与内容审核由上游决定。
+- Base URL：`https://yuzhideep.cn/v1`；鉴权 `Authorization: Bearer sk-...`；协议 OpenAI Chat Completions。
+- 接口：`POST /v1/chat/completions`、`GET /v1/models`、`GET /v1/dashboard/billing/subscription`。
+- 计费：人民币 / 100 万 tokens，输入与输出分开；**国产模型官方价 5 折**；**海外模型官方价 ×1.25**。
+- 限额：默认 **60 次/分钟 / 令牌**。
+- 注册：邮箱 + 邮箱验证码，不需要手机号；配额不可提现、不可转让。
+- 支持：流式 SSE；工具调用、JSON 模式等**按模型而定**。
+- 明确不做：不提供「海外模型 0.0x 折」；不处理收款；不卖卡密；不支持未授权的转售与二次分发。
+
+## 文档
+
+- [README](./README.md)：完整接入文档（产品定义、快速开始、模型价格、接口、错误码、FAQ）。
+- [快速开始](./docs/quickstart.md)：从注册到第一條请求，10 分钟。
+- [接口参考](./docs/api-reference.md)：请求/响应字段、SSE、工具调用。
+- [模型与价格](./docs/models-and-pricing.md)：价目示例、计费公式、选型建议。
+- [错误码](./docs/errors.md)：状态码与 `code` 对照、重试策略。
+- [限额与配额](./docs/limits.md)：限速、并发、账单、数据边界。
+- [FAQ](./docs/faq.md)：接入、价格、稳定、合规四组问答。
+- [CHANGELOG](./docs/changelog.md)：对调用方有影响的变更。
+
+## 示例代码
+
+- [curl](./examples/curl.sh)
+- [Python（OpenAI SDK）](./examples/python_openai_sdk.py)
+- [Python 流式](./examples/python_stream.py)
+- [Node（OpenAI SDK）](./examples/node_openai_sdk.mjs)
+
+## 同主体其他产品
+
+- 小豆支付开放平台（已有系统的商家接支付宝 / 微信收款）：<https://xdfair.cn/> ｜ <https://github.com/xiaodou-official/xiaodou-open-platform>
+- 小豆集市（不用写代码，上架数字商品就能开卖）：<https://xdjishi.cn/> ｜ <https://github.com/xiaodou-official/xiaodou-market>
+- 品牌总站（三条产品线入口与备案信息）：<https://www.xiaodouap.cn/>
+- App 端产品说明：<https://github.com/xiaodou-official/xiaodou-app>
+- Gitee 镜像：<https://gitee.com/lu-wulei/xiaodou-llm-api>
+
+## 许可与引用
+
+- 内容 CC BY 4.0，示例代码 MIT；引用请保留出处链接。
+- 本文件对应文档版本 v1.0.0（2026-11-22）。

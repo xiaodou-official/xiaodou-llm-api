@@ -1,0 +1,41 @@
+name: 接口问题 / API issue
+description: 调用小豆AI大模型聚合 接口平台时遇到的错误、异常或计费疑问
+title: "[API] "
+labels: ["api"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提 Issue 前请先确认：令牌有效、模型在 `GET /v1/models` 里、错误码与 [错误码表](https://www.xiaodouap.cn/llm-api/#errors) 对得上。
+        **不要贴完整令牌、手机号、身份证号或客户数据**；令牌请写成 `sk-***`。
+  - type: input
+    id: model
+    attributes:
+      label: 模型 ID
+      placeholder: deepseek-v4.1-flash
+    validations:
+      required: true
+  - type: input
+    id: status
+    attributes:
+      label: HTTP 状态码与 error.code
+      placeholder: 429 / rate_limit_exceeded
+    validations:
+      required: true
+  - type: input
+    id: time
+    attributes:
+      label: 发生时间（北京时间，精确到分钟）
+      placeholder: 2026-11-22 12:30
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: 最小复现请求（脱敏）
+      description: 去掉令牌与敏感内容后的请求体，或 curl 命令
+      render: shell
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果与实际结果
