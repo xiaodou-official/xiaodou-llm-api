@@ -317,6 +317,14 @@ console.log(resp.choices[0].message.content);
 - App 端产品说明：<https://github.com/xiaodou-official/xiaodou-app>
 - 接入文档网页版：<https://www.xiaodouap.cn/llm-api/>
 
+## English
+
+Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 63 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. Domestic models are billed at **50% of the vendor list price**; overseas text models start at **18% of the official price (0.18x)**; image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
+
+The platform also supports **one-click import into CC Switch** for Claude Code and Codex: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. Gemini CLI is not supported because the gateway does not expose a native Gemini endpoint.
+
+Docs: <https://www.xiaodouap.cn/llm-api/> ｜ GitHub: <https://github.com/xiaodou-official/xiaodou-llm-api> ｜ Gitee: <https://gitee.com/lu-wulei/xiaodou-llm-api>
+
 ## 版本与许可
 
 - 文档版本：v1.0.0（2026-11-22 首次公开发布）。变更见 [CHANGELOG](./docs/changelog.md)。
