@@ -11,6 +11,6 @@
     <rect x="394" y="146" width="212" height="38" rx="8" fill="#C4553B"/>
     <text x="410" y="170" fill="#14120F">国产模型 ×0.5</text>
     <rect x="622" y="146" width="210" height="38" rx="8" fill="#201E1A" stroke="#3A352F"/>
-    <text x="638" y="170" fill="#A8A29A">海外 ×1.25（非折扣）</text>
+    <text x="638" y="170" fill="#A8A29A">海外文本 1.8 折起</text>
   </g>
 </svg>
