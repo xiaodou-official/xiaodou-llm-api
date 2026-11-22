@@ -10,7 +10,7 @@
 
 > 价格口径以本页为准：海外文本是**官方价的 0.18 倍**，不是加价；旧版文档里的海外加价写法已作废。
 
-**直接找**：[30 秒接入](#30-秒接入) ｜ [支持哪些模型](#支持哪些模型) ｜ [价格怎么算](#价格怎么算) ｜ [接口清单](#接口清单) ｜ [错误码](#错误码与排查) ｜ [常见问题](#常见问题)
+**直接找**：[30 秒接入](#30-秒接入) ｜ [导入 CC Switch](#导入-cc-switchclaude-code--codex) ｜ [支持哪些模型](#支持哪些模型) ｜ [价格怎么算](#价格怎么算) ｜ [接口清单](#接口清单) ｜ [错误码](#错误码与排查) ｜ [常见问题](#常见问题)
 
 > 控制台（注册 / 令牌 / 额度）：<https://yuzhideep.cn/login> ｜ 充值：<https://yuzhideep.cn/topup/>
 >
@@ -42,6 +42,7 @@
 | 注册方式 | 邮箱 + 邮箱验证码，不需要手机号 |
 | 默认限速 | 每令牌 **60 次/分钟** |
 | 支持能力 | 流式输出（SSE）、多轮上下文、工具调用（以模型支持为准）、OpenAI SDK |
+| 客户端导入 | CC Switch 一键导入 Claude Code / Codex（密钥列表行末「⋯」→「CC Switch」） |
 | 计费口径 | 以控制台「模型广场」公示为准；上游调价时平台同步调整并公告 |
 | 本仓定位 | 公开接入文档（内容 CC BY 4.0，示例代码 MIT） |
 
@@ -77,6 +78,20 @@ curl https://yuzhideep.cn/v1/chat/completions \
 ```
 
 三种语言的完整示例在 [`examples/`](./examples/)：`curl.sh`、`python_openai_sdk.py`、`node_openai_sdk.mjs`、`python_stream.py`。
+
+## 导入 CC Switch（Claude Code / Codex）
+
+CC Switch 是管理 Claude Code / Codex 供应商的开源工具（[ccswitch.io](https://ccswitch.io)）。本平台已内置导入入口：
+
+1. 登录控制台，在「令牌 / API Keys」页新建一枚 `sk-` 令牌。
+2. 在令牌行末点「⋯」→「CC Switch」，选 **Claude Code** 或 **Codex** 与主模型。
+3. 浏览器唤起 CC Switch 后，核对地址与打码后的 Key，点「导入」。
+
+没有装 CC Switch 的，先下载安装；也可以打开 <https://yuzhideep.cn/ccswitch/> 粘贴令牌，生成 `ccswitch://` 导入链接（Key 只在浏览器本地拼接，不上传服务器）。
+
+- Claude Code 用本平台的 Claude 系列模型可直接选；用 GLM、DeepSeek 等非 Claude 模型时，选对应模型即可。
+- Codex 建议选 `gpt-6-sol` 或 `gpt-6.1-sol`。
+- 原生深链接不带余额查询脚本，卡片上不显示余额；余额以控制台为准。
 
 ## 支持哪些模型
 
