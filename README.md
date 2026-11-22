@@ -323,7 +323,7 @@ Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible g
 
 The platform also supports **one-click import into CC Switch** for Claude Code and Codex: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. Gemini CLI is not supported because the gateway does not expose a native Gemini endpoint.
 
-Docs: <https://www.xiaodouap.cn/llm-api/> ｜ GitHub: <https://github.com/xiaodou-official/xiaodou-llm-api> ｜ Gitee: <https://gitee.com/lu-wulei/xiaodou-llm-api>
+Docs: <https://www.xiaodouap.cn/llm-api/> ｜ English page: <https://yuzhideep.cn/en/> ｜ GitHub: <https://github.com/xiaodou-official/xiaodou-llm-api> ｜ Gitee: <https://gitee.com/lu-wulei/xiaodou-llm-api>
 
 ## 版本与许可
 
