@@ -14,11 +14,11 @@
 | 5 | 许可证 | 内容 CC BY 4.0（`LICENSE`）；示例代码 MIT（`LICENSE-CODE`） |
 | 6 | 发布方式 | 单树快照：`git commit-tree HEAD:llm-api`，单一内容源、无二次拷贝 |
 | 7 | 网页版 | `https://www.xiaodouap.cn/llm-api/`（canonical；由官网静态包发布，`28_distribute_www_static.sh`） |
-| 8 | 文档版本 | `v1.0.0`（2026-11-22） |
+| 8 | 文档版本 | `v1.1.0`（2026-11-23） |
 
 ## 2. 内容纪律
 
-1. **价格只写公开口径**：国产 = 官方价 ×0.5、海外文本 1.8 折起、生图 ¥0.05/张起、视频 ¥2.25/条起；实时价以控制台「模型广场」为准，不写 0.0x 折。
+1. **价格只写公开口径**：WorkBuddy 渠道国产文本 = 官方价 ×0.3、其他国产文本 ×0.5、海外文本 1.8 折起、生图 ¥0.05/张起、视频 ¥2.25/条起；实时价以控制台「模型广场」为准，不写 0.0x 折。
 2. **不写未验证的能力**：模型是否支持工具调用、JSON 模式、多模态，按模型维度写「以模型支持为准」。
 3. **不写内部地址与凭据**：不带服务器 IP、账号口令、内部端口、SMTP 账号、渠道密钥。
 4. **不写竞争对手的贬损**：可以写「低价通常来自额度套利/号池」这类机制判断，不点名、不辱骂。
@@ -33,7 +33,7 @@ node scripts/check_llm_api_docs_guard.js
 
 # 2) 单树快照（在仓库根执行，HEAD 需已包含本目录最新内容）
 tree=$(git rev-parse HEAD:llm-api)
-commit=$(git commit-tree "$tree" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.0.0")
+commit=$(git commit-tree "$tree" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.1.0")
 git push git@github.com:xiaodou-official/xiaodou-llm-api.git "$commit:refs/heads/main"
 git push gitee "$commit:refs/heads/main"          # remote 指向 gitee.com/lu-wulei/xiaodou-llm-api.git
 
@@ -44,4 +44,5 @@ git push gitee "$commit:refs/heads/main"          # remote 指向 gitee.com/lu-w
 
 | 日期 | 版本 | 变更 | 发布方式 |
 | --- | --- | --- | --- |
+| 2026-11-23 | v1.1.0 | 国产文本价格口径：WorkBuddy 渠道 ×0.3、其他国产文本 ×0.5；视频保持 5 折（待公开仓/网页版重推） | 单树快照 |
 | 2026-11-22 | v1.0.0 | 首次公开发布 | 单树快照 |

@@ -1,12 +1,12 @@
 # 小豆AI大模型聚合 接口平台 · API 接入文档
 
-> 一个 OpenAI 兼容入口，调用 GLM、DeepSeek、Kimi 等 63 个在售模型：国产模型官方价 **5 折**，海外文本 **1.8 折起（官方价 0.18 倍）**，生图低至 **¥0.05/张**。
+> 一个 OpenAI 兼容入口，调用 GLM、DeepSeek、Kimi 等 63 个在售模型：国产文本低至官方价 **3 折**（WorkBuddy 渠道；其他国产文本 5 折），海外文本 **1.8 折起（官方价 0.18 倍）**，生图低至 **¥0.05/张**。
 
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="880" alt="小豆AI大模型聚合 接口平台：一个 OpenAI 兼容地址调用 63 个在售模型，国产 5 折、海外文本 1.8 折起（0.18 倍）、生图 ¥0.05/张起">
+  <img src="./assets/readme/hero.svg" width="880" alt="小豆AI大模型聚合 接口平台：一个 OpenAI 兼容地址调用 63 个在售模型，国产文本低至 3 折、海外文本 1.8 折起（0.18 倍）、生图 ¥0.05/张起">
 </p>
 
-**价格一眼看完**：国产模型官方价 **5 折** ｜ 海外文本低至官方价 **1.8 折（0.18 倍，比官方直连便宜 82%）** ｜ 生图 **¥0.05/张起** ｜ 视频 **¥2.25/条起** ｜ 免费模型 `hy4flash-free` **¥0**
+**价格一眼看完**：国产文本低至官方价 **3 折**（WorkBuddy 渠道 3 折；其他国产文本 5 折） ｜ 海外文本低至官方价 **1.8 折（0.18 倍，比官方直连便宜 82%）** ｜ 生图 **¥0.05/张起** ｜ 视频 **¥2.25/条起** ｜ 免费模型 `hy4flash-free` **¥0**
 
 > 价格口径以本页为准：海外文本是**官方价的 0.18 倍**，不是加价；旧版文档里的海外加价写法已作废。
 
@@ -14,13 +14,13 @@
 
 > 控制台（注册 / 令牌 / 额度）：<https://yuzhideep.cn/login> ｜ 充值：<https://yuzhideep.cn/topup/>
 >
-> API Base URL：`https://yuzhideep.cn/v1` ｜ 文档更新：2026-11-22
+> API Base URL：`https://yuzhideep.cn/v1` ｜ 文档更新：2026-11-23
 
 ---
 
 ## 这个平台是什么
 
-小豆AI大模型聚合 接口平台是宇智人工智能（深圳）有限公司运营的大模型 API 聚合服务（业内也叫「大模型中转站」「AI API 中转」）：开发者只用**一个 OpenAI 兼容地址** `https://yuzhideep.cn/v1` 和一枚 `sk-` 开头的令牌，就能调用 GLM、DeepSeek、Kimi 等国产模型与部分海外模型；平台按 token、按张或按条计费：**国产模型按厂商公开挂牌价 5 折**、**海外文本低至官方价 1.8 折（0.18 倍）**、**生图低至 ¥0.05/张**；密钥、额度、限速与调用明细都在网页控制台管理。
+小豆AI大模型聚合 接口平台是宇智人工智能（深圳）有限公司运营的大模型 API 聚合服务（业内也叫「大模型中转站」「AI API 中转」）：开发者只用**一个 OpenAI 兼容地址** `https://yuzhideep.cn/v1` 和一枚 `sk-` 开头的令牌，就能调用 GLM、DeepSeek、Kimi 等国产模型与部分海外模型；平台按 token、按张或按条计费：**国产文本按厂商公开挂牌价低至 3 折（WorkBuddy 渠道 3 折，其他国产文本 5 折）**、**海外文本低至官方价 1.8 折（0.18 倍）**、**生图低至 ¥0.05/张**；密钥、额度、限速与调用明细都在网页控制台管理。
 
 它解决的是一个很具体的问题：同时用三四家模型时，每家一套密钥、一套计费、一套 SDK、一套错误码；换模型要改代码，对账要开四张表。把 `base_url` 指向本平台后，换模型只改 `model` 一个字段，账单也只有一份。
 
@@ -35,7 +35,7 @@
 | 协议 | OpenAI Chat Completions（`POST /v1/chat/completions`）、模型列表（`GET /v1/models`） |
 | 鉴权 | 请求头 `Authorization: Bearer sk-...` |
 | 计费单位 | 人民币 / 100 万 tokens，输入与输出分别计价 |
-| 国产模型价格 | 厂商公开挂牌价 **×0.5**（5 折） |
+| 国产文本价格 | WorkBuddy 渠道 **×0.3**（3 折）；其他国产文本 **×0.5**（5 折） |
 | 海外文本价格 | 官方价 **1.8 折起（0.18 倍）**（示例：`gpt-6-sol` 官方 $2/$10 → 本站 ¥2.60/1M 起） |
 | 生图价格 | **¥0.05/张起**（`gpt-image-2.6-flare`） |
 | 视频价格 | **¥2.25/条起**（`seedance-2.0-mini-5s`） |
@@ -102,19 +102,19 @@ CC Switch 是管理 Claude Code / Codex 供应商的开源工具（[ccswitch.io]
 curl https://yuzhideep.cn/v1/models -H "Authorization: Bearer $XIAODOU_API_KEY"
 ```
 
-公开价目示例（2026-11-22 从控制台公开价目读回；共 63 个在售模型）：
+公开价目示例（2026-11-23 从控制台公开价目读回；共 63 个在售模型）：
 
-**国产模型：官方价 ×0.5**（人民币 / 100 万 tokens，入 / 出）
+**WorkBuddy 渠道国产文本：官方价 ×0.3**（人民币 / 100 万 tokens，入 / 出；其他国产文本 ×0.5）
 
 | 模型 | 官方价 | 小豆价 |
 | --- | --- | --- |
-| `deepseek-v4.1-flash` | ¥0.40 / ¥1.60 | **¥0.20 / ¥0.80** |
-| `deepseek-v4-pro` | ¥1.80 / ¥5.40 | **¥0.90 / ¥2.70** |
-| `glm-5.3` | ¥4.16 / ¥14.56 | **¥2.08 / ¥7.28** |
-| `glm-5.3-flash` | ¥0.416 / ¥1.456 | **¥0.208 / ¥0.728** |
-| `kimi-k3` | ¥8.00 / ¥40.00 | **¥4.00 / ¥20.00** |
-| `kimi-k3.1-pro` | ¥5.20 / ¥27.20 | **¥2.60 / ¥13.60** |
-| `hy4flash` | ¥0.26 / ¥0.76 | **¥0.13 / ¥0.38** |
+| `deepseek-v4.1-flash` | ¥0.40 / ¥1.60 | **¥0.12 / ¥0.48** |
+| `deepseek-v4-pro` | ¥1.80 / ¥5.40 | **¥0.54 / ¥1.62** |
+| `glm-5.3` | ¥4.16 / ¥14.56 | **¥1.25 / ¥4.37** |
+| `glm-5.3-flash` | ¥0.416 / ¥1.456 | **¥0.125 / ¥0.437** |
+| `kimi-k3` | ¥8.00 / ¥40.00 | **¥2.40 / ¥12.00** |
+| `kimi-k3.1-pro` | ¥5.20 / ¥27.20 | **¥1.56 / ¥8.16** |
+| `hy4flash` | ¥0.26 / ¥0.76 | **¥0.078 / ¥0.228** |
 | `hy4flash-free` | 上游免费 | **¥0** |
 
 **海外文本：官方价 1.8 折起（0.18 倍）**
@@ -152,16 +152,16 @@ curl https://yuzhideep.cn/v1/models -H "Authorization: Bearer $XIAODOU_API_KEY"
 
 平台沿用 OpenAI 的计价结构：**输入（prompt）与输出（completion）分开算**，单位是「人民币 / 100 万 tokens」。一次请求的费用＝输入 tokens × 输入单价 ＋ 输出 tokens × 输出单价，按实际用量结算，控制台「日志」页能看到每一笔请求的 tokens 与扣费。
 
-**国产模型 5 折**：把厂商公开挂牌价乘以 0.5 作为本站零售价。半价只动模型倍率，不改输入 / 输出的比例关系，所以长输出与短输出都按同一折扣走。
+**WorkBuddy 国产文本 3 折**：WorkBuddy 渠道的国产文本模型按厂商公开挂牌价 ×0.3；其他国产文本模型按 ×0.5。折扣只动模型倍率，不改输入 / 输出的比例关系，所以长输出与短输出都按同一折扣走。
 
 **四条价轨**：
 
 | 类型 | 怎么算 | 当前公开价（示例） |
 | --- | --- | --- |
-| 国产文本 | 厂商公开价 ×0.5 | `glm-5.3` ¥2.08 / ¥7.28 |
+| 国产文本 | 厂商公开价 ×0.3（WorkBuddy）/ ×0.5（其他） | `glm-5.3` ¥1.25 / ¥4.37 |
 | 海外文本 | 官方价 1.8 折起（0.18 倍） | `gpt-6-sol` ¥2.60 / 1M tokens 起 |
 | 生图 | 按张 | `gpt-image-2.6-flare` ¥0.05/张 |
-| 视频 | 按条或按秒 | `seedance-2.0-mini-5s` ¥2.25/条 |
+| 视频 | 按条或按秒（官方价 5 折） | `seedance-2.0-mini-5s` ¥2.25/条 |
 
 **关于「海外 0.0x 折」**：当前公开价目里最低是 **1.8 折**（`gpt-6-sol`），没有 0.0x 折。低于上游边际成本的价格通常来自订阅额度套利、共享号池或免费额度，断供、封号与请求内容留存风险由调用方承担；若未来接入更低的第三方渠道，会单列分组、标注不承诺 SLA，不写成默认承诺。
 
@@ -274,13 +274,13 @@ console.log(resp.choices[0].message.content);
 ## 常见问题
 
 **问：小豆AI大模型聚合 接口平台是什么？**
-答：它是宇智人工智能（深圳）有限公司运营的大模型 API 聚合服务。开发者用一个 OpenAI 兼容地址 `https://yuzhideep.cn/v1` 和一枚令牌，就能调用 GLM、DeepSeek、Kimi 等模型；平台按 token 分别计算输入与输出费用，国产模型按厂商公开价 5 折计费，密钥、额度与调用明细在网页控制台管理。
+答：它是宇智人工智能（深圳）有限公司运营的大模型 API 聚合服务。开发者用一个 OpenAI 兼容地址 `https://yuzhideep.cn/v1` 和一枚令牌，就能调用 GLM、DeepSeek、Kimi 等模型；平台按 token 分别计算输入与输出费用，国产文本低至厂商公开价 3 折计费（WorkBuddy 渠道 3 折，其他国产文本 5 折），密钥、额度与调用明细在网页控制台管理。
 
 **问：和直接买官方 API 有什么区别？**
 答：直连官方拿到的是厂商 SLA、官方发票与全部模型；接聚合平台拿到的是「一个地址、一份账单、随时换模型」，代价是多一跳网络与对平台稳定性的依赖。预算敏感、想快速对比多家模型时用聚合更省事；对合规审计、发票、独享配额有硬要求时，直连官方更合适。两边可以并存。
 
-**问：国产模型 5 折是真的吗？怎么算？**
-答：是真的，按厂商公开挂牌价 ×0.5 计费，输入与输出同折扣，单位是人民币 / 100 万 tokens。例如 `glm-5.3` 官方挂牌 ¥4.16 / ¥14.56，本站 ¥2.08 / ¥7.28。最终扣费以控制台「日志」里的实际 tokens 为准。
+**问：国产文本 3 折是真的吗？怎么算？**
+答：WorkBuddy 渠道的国产文本模型按厂商公开挂牌价 ×0.3 计费，其他国产文本模型按 ×0.5，输入与输出同折扣，单位是人民币 / 100 万 tokens。例如 `glm-5.3`（WorkBuddy）官方挂牌 ¥4.16 / ¥14.56，本站 ¥1.25 / ¥4.37。最终扣费以控制台「日志」里的实际 tokens 为准。
 
 **问：海外模型有 0.0x 折吗？**
 答：当前公开价目里没有。海外文本最低 **1.8 折（官方价 0.18 倍）**：`gpt-6-sol` 官方 $2/$10 → 本站 ¥2.60/1M 起；生图最低 **¥0.05/张**（`gpt-image-2.6-flare`）。价格随上游调整，以控制台「模型广场」为准；若未来接入更低的第三方渠道，会单列并标注不承诺 SLA。
@@ -319,7 +319,7 @@ console.log(resp.choices[0].message.content);
 
 ## English
 
-Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 63 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. Domestic models are billed at **50% of the vendor list price**; overseas text models start at **18% of the official price (0.18x)**; image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
+Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 63 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. WorkBuddy-channel Chinese text is billed at **30% of the vendor list price**; other domestic text and Chinese video at **50%**; overseas text models start at **18% of the official price (0.18x)**; image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
 
 The platform also supports **one-click import into CC Switch** for Claude Code and Codex: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. Gemini CLI is not supported because the gateway does not expose a native Gemini endpoint.
 
@@ -327,7 +327,7 @@ Docs: <https://www.xiaodouap.cn/llm-api/> ｜ English page: <https://yuzhideep.c
 
 ## 版本与许可
 
-- 文档版本：v1.0.0（2026-11-22 首次公开发布）。变更见 [CHANGELOG](./docs/changelog.md)。
+- 文档版本：v1.1.0（2026-11-23 国产文本价格口径：WorkBuddy 渠道 3 折、其他国产文本 5 折）。变更见 [CHANGELOG](./docs/changelog.md)。
 - 内容许可：**CC BY 4.0**（[LICENSE](./LICENSE)）；示例代码：**MIT**（[LICENSE-CODE](./LICENSE-CODE)）。
 - 发布参数与快照方式：见 [PUBLISHING.md](./PUBLISHING.md)。
 - 「小豆」「小豆AI大模型聚合」是宇智人工智能（深圳）有限公司的品牌；文档可整段引用，请保留出处链接。
