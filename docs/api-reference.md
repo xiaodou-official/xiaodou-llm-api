@@ -20,7 +20,7 @@ Base URL：`https://yuzhideep.cn/v1`
 
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `model` | string | 是 | 模型 ID，见控制台「模型广场」或 `GET /v1/models` |
+| `model` | string | 是 | 模型 ID，见控制台「模型与价格」或 `GET /v1/models` |
 | `messages` | array | 是 | 消息数组，见下表 |
 | `stream` | boolean | 否 | `true` 返回 SSE；默认 `false` |
 | `temperature` | number | 否 | 采样温度，范围与上游一致（通常 0–2） |
