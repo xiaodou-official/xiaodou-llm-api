@@ -14,7 +14,7 @@
 | 5 | 许可证 | 内容 CC BY 4.0（`LICENSE`）；示例代码 MIT（`LICENSE-CODE`） |
 | 6 | 发布方式 | 单树快照：`git commit-tree HEAD:public-docs`，单一内容源、无二次拷贝 |
 | 7 | 网页版 | `https://www.xiaodouap.cn/llm-api/`（canonical；仍由主仓官网静态包 `28_distribute_www_static.sh` 发布，内容需与本目录同步） |
-| 8 | 文档版本 | `v1.2.0`（2026-11-24） |
+| 8 | 文档版本 | `v1.3.0`（2026-11-25） |
 
 ## 2. 内容纪律
 
@@ -33,7 +33,7 @@ node scripts/check_llm_api_docs_guard.js
 
 # 2) 单树快照（在本仓根执行，HEAD 需已包含本目录最新内容）
 tree=$(git rev-parse HEAD:public-docs)
-commit=$(git commit-tree "$tree" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.2.0")
+commit=$(git commit-tree "$tree" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.3.0")
 git push git@github.com:xiaodou-official/xiaodou-llm-api.git "$commit:refs/heads/main"
 git push gitee "$commit:refs/heads/main"          # remote 指向 gitee.com/lu-wulei/xiaodou-llm-api.git
 
@@ -44,6 +44,7 @@ git push gitee "$commit:refs/heads/main"          # remote 指向 gitee.com/lu-w
 
 | 日期 | 版本 | 变更 | 发布方式 |
 | --- | --- | --- | --- |
+| 2026-11-25 | v1.3.0 | 新增 tk1688 上游，在售 80；按次计费单位修正为人民币/次并与公示价对齐；`gemini-4-carbon` 切源 | 单树快照 |
 | 2026-11-24 | v1.2.0 | 国产文本价格口径统一为 ×0.3（3 折）；国产视频保持 5 折 | 单树快照 |
 | 2026-11-23 | v1.1.0 | 国产文本价格口径：WorkBuddy 渠道 ×0.3、其他国产文本 ×0.5；视频保持 5 折（历史口径） | 单树快照 |
 | 2026-11-22 | v1.0.0 | 首次公开发布 | 单树快照 |

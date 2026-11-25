@@ -1,9 +1,9 @@
 # 小豆AI大模型聚合 接口平台 · API 接入文档
 
-> 一个 OpenAI 兼容入口，调用 GLM、DeepSeek、Kimi 等 63 个在售模型：国产文本低至官方价 **3 折**，海外文本 **1.8 折起（官方价 0.18 倍）**，生图低至 **¥0.05/张**。
+> 一个 OpenAI 兼容入口，调用 GLM、DeepSeek、Kimi 等 80 个在售模型：国产文本低至官方价 **3 折**，海外文本 **1.8 折起（官方价 0.18 倍）**，生图低至 **¥0.05/张**。
 
 <p align="center">
-  <img src="./assets/readme/hero.svg" width="880" alt="小豆AI大模型聚合 接口平台：一个 OpenAI 兼容地址调用 63 个在售模型，国产文本低至 3 折、海外文本 1.8 折起（0.18 倍）、生图 ¥0.05/张起">
+  <img src="./assets/readme/hero.svg" width="880" alt="小豆AI大模型聚合 接口平台：一个 OpenAI 兼容地址调用 80 个在售模型，国产文本低至 3 折、海外文本 1.8 折起（0.18 倍）、生图 ¥0.05/张起">
 </p>
 
 **价格一眼看完**：国产文本低至官方价 **3 折** ｜ 海外文本低至官方价 **1.8 折（0.18 倍，比官方直连便宜 82%）** ｜ 生图 **¥0.05/张起** ｜ 视频 **¥2.25/条起** ｜ 免费模型 `hy4flash-free` **¥0**
@@ -14,7 +14,7 @@
 
 > 控制台（注册 / 令牌 / 额度）：<https://yuzhideep.cn/login> ｜ 充值：<https://yuzhideep.cn/topup/>
 >
-> API Base URL：`https://yuzhideep.cn/v1` ｜ 文档更新：2026-11-24
+> API Base URL：`https://yuzhideep.cn/v1` ｜ 文档更新：2026-11-25
 
 ---
 
@@ -102,7 +102,7 @@ CC Switch 是管理 Claude Code / Codex 供应商的开源工具（[ccswitch.io]
 curl https://yuzhideep.cn/v1/models -H "Authorization: Bearer $XIAODOU_API_KEY"
 ```
 
-公开价目示例（2026-11-24 从控制台公开价目读回；共 63 个在售模型）：
+公开价目示例（2026-11-25 从控制台公开价目读回；共 80 个在售模型）：
 
 **国产文本：官方价 ×0.3**（人民币 / 100 万 tokens，入 / 出）
 
@@ -319,7 +319,7 @@ console.log(resp.choices[0].message.content);
 
 ## English
 
-Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 63 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. Chinese text is billed at **30% of the vendor list price**; Chinese video at **50%**; overseas text models start at **18% of the official price (0.18x)**; image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
+Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 80 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. Chinese text is billed at **30% of the vendor list price**; Chinese video at **50%**; overseas text models start at **18% of the official price (0.18x)**; image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
 
 The platform also supports **one-click import into CC Switch** for Claude Code and Codex: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. Gemini CLI is not supported because the gateway does not expose a native Gemini endpoint.
 
@@ -327,7 +327,7 @@ Docs: <https://www.xiaodouap.cn/llm-api/> ｜ English page: <https://yuzhideep.c
 
 ## 版本与许可
 
-- 文档版本：v1.2.0（2026-11-24 国产文本价格口径统一为 3 折）。变更见 [CHANGELOG](./docs/changelog.md)。
+- 文档版本：v1.3.0（2026-11-25 新增 tk1688 上游并修正按次价格单位）。变更见 [CHANGELOG](./docs/changelog.md)。
 - 内容许可：**CC BY 4.0**（[LICENSE](./LICENSE)）；示例代码：**MIT**（[LICENSE-CODE](./LICENSE-CODE)）。
 - 发布参数与快照方式：见 [PUBLISHING.md](./PUBLISHING.md)。
 - 「小豆」「小豆AI大模型聚合」是宇智人工智能（深圳）有限公司的品牌；文档可整段引用，请保留出处链接。
