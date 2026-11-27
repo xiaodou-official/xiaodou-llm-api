@@ -23,7 +23,7 @@ Base URL：`https://yuzhideep.cn/v1`
 | `model` | string | 是 | 模型 ID，见控制台「模型与价格」或 `GET /v1/models` |
 | `messages` | array | 是 | 消息数组，见下表 |
 | `stream` | boolean | 否 | `true` 返回 SSE；默认 `false` |
-| `temperature` | number | 否 | 采样温度，范围与上游一致（通常 0–2） |
+| `temperature` | number | 否 | 采样温度，范围与模型一致（通常 0–2） |
 | `top_p` | number | 否 | 核采样，通常与 `temperature` 二选一 |
 | `max_tokens` | integer | 否 | 最大输出 tokens；受模型上限约束 |
 | `stop` | string \| string[] | 否 | 停止词 |
@@ -143,5 +143,5 @@ curl https://yuzhideep.cn/v1/models -H "Authorization: Bearer $XIAODOU_API_KEY"
 ## 6. 兼容性说明
 
 - 遵循 OpenAI 协议，但**不保证** OpenAI 的全部实验性字段（如 `logprobs`、`service_tier`）在所有模型上生效；不支持的字段通常被忽略，个别模型会返回 400。
-- 图片、语音、向量等接口取决于上游是否提供，接入前用 `GET /v1/models` 与控制台确认。
+- 图片、语音、向量等接口取决于具体模型是否提供，接入前用 `GET /v1/models` 与控制台确认。
 - 不同模型对 `tools`、`response_format`、上下文长度的支持不同；以模型为维度做能力开关，不要按平台维度假设。
