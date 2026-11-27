@@ -31,11 +31,16 @@
 # 1) 本地检查：链接、UTF-8、无敏感串（在 llm 仓根执行）
 node scripts/check_llm_api_docs_guard.js
 
-# 2) 单树快照（在本仓根执行，HEAD 需已包含本目录最新内容）
+# 2) 单树快照（每个远端一个快照；parent 取该远端当前 main，保证快进推送）
 tree=$(git rev-parse HEAD:public-docs)
-commit=$(git commit-tree "$tree" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.4.0")
-git push git@github.com:xiaodou-official/xiaodou-llm-api.git "$commit:refs/heads/main"
-git push gitee "$commit:refs/heads/main"          # remote 指向 gitee.com/lu-wulei/xiaodou-llm-api.git
+for repo in \
+  https://github.com/xiaodou-official/xiaodou-llm-api.git \
+  https://gitee.com/lu-wulei/xiaodou-llm-api.git
+do
+  parent=$(git ls-remote "$repo" refs/heads/main | cut -f1)
+  commit=$(git commit-tree "$tree" -p "$parent" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.4.0")
+  git push "$repo" "${commit}:refs/heads/main"
+done
 
 # 3) 读回：逐文件比对 GitHub raw 与本地源
 ```
