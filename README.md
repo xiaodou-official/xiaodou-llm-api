@@ -10,7 +10,7 @@
 
 > 价格口径以本页为准：海外文本最低是 **0.49 折（官方价 0.049 倍）** 的 `claude-opus-4.8`，不是所有海外模型都 0.49 折；国产文本最低 **¥0** 来自 `hy4flash-free` 的免费档，付费模型 **3 折起**。价格可能调整，以控制台「模型与价格」为准。
 
-**直接找**：[30 秒接入](#30-秒接入) ｜ [导入 CC Switch](#导入-cc-switchclaude-code--codex) ｜ [支持哪些模型](#支持哪些模型) ｜ [价格怎么算](#价格怎么算) ｜ [接口清单](#接口清单) ｜ [错误码](#错误码与排查) ｜ [常见问题](#常见问题)
+**直接找**：[30 秒接入](#30-秒接入) ｜ [导入 CC Switch](#导入-cc-switchclaude-code--codex--gemini-cli) ｜ [支持哪些模型](#支持哪些模型) ｜ [价格怎么算](#价格怎么算) ｜ [接口清单](#接口清单) ｜ [错误码](#错误码与排查) ｜ [常见问题](#常见问题)
 
 > 控制台（注册 / 令牌 / 额度）：<https://yuzhideep.cn/login> ｜ 充值：<https://yuzhideep.cn/topup/>
 >
@@ -42,7 +42,7 @@
 | 注册方式 | 邮箱 + 邮箱验证码，不需要手机号 |
 | 默认限速 | 每令牌 **60 次/分钟** |
 | 支持能力 | 流式输出（SSE）、多轮上下文、工具调用（以模型支持为准）、OpenAI SDK |
-| 客户端导入 | CC Switch 一键导入 Claude Code / Codex（密钥列表行末「⋯」→「CC Switch」） |
+| 客户端导入 | CC Switch 一键导入 Claude Code / Codex / Gemini CLI（密钥列表行末「⋯」→「CC Switch」） |
 | 计费口径 | 以控制台「模型与价格」公示为准；价格调整时平台同步公告 |
 | 本仓定位 | 公开接入文档（内容 CC BY 4.0，示例代码 MIT） |
 
@@ -79,20 +79,54 @@ curl https://yuzhideep.cn/v1/chat/completions \
 
 三种语言的完整示例在 [`examples/`](./examples/)：`curl.sh`、`python_openai_sdk.py`、`node_openai_sdk.mjs`、`python_stream.py`。
 
-## 导入 CC Switch（Claude Code / Codex）
+## 导入 CC Switch（Claude Code / Codex / Gemini CLI）
 
-CC Switch 是管理 Claude Code / Codex 供应商的开源工具（[ccswitch.io](https://ccswitch.io)）。本平台已内置导入入口：
+CC Switch 是管理 Claude Code / Codex / Gemini CLI 供应商的开源工具（[ccswitch.io](https://ccswitch.io)）。本平台已内置导入入口：
 
 1. 登录控制台，在「令牌 / API Keys」页新建一枚 `sk-` 令牌。
-2. 在令牌行末点「⋯」→「CC Switch」，选 **Claude Code** 或 **Codex** 与主模型。
+2. 在令牌行末点「⋯」→「CC Switch」，选 **Claude Code**、**Codex** 或 **Gemini CLI** 与主模型。
 3. 浏览器唤起 CC Switch 后，核对地址与打码后的 Key，点「导入」。
 
 没有装 CC Switch 的，先下载安装；也可以打开 <https://yuzhideep.cn/ccswitch/> 粘贴令牌，生成 `ccswitch://` 导入链接（Key 只在浏览器本地拼接，不上传服务器）。
 
 - Claude Code 用本平台的 Claude 系列模型可直接选；用 GLM、DeepSeek 等非 Claude 模型时，选对应模型即可。
 - Codex 建议选 `gpt-6-sol` 或 `gpt-6.1-sol`。
-- Gemini CLI 暂不支持（网关没有 Gemini 原生端点），请选 Claude Code 或 Codex。
+- Gemini CLI 端点填 `https://yuzhideep.cn`，**不要带 `/v1beta` 后缀**——CLI 会自己拼 `/v1beta/models/...`，带上会变成 `/v1beta/v1beta/...` 并返回 404。导入后还需补一步，见下节。
 - 原生深链接不带余额查询脚本，卡片上不显示余额；余额以控制台为准。
+
+### Gemini CLI 额外一步：声明网关鉴权
+
+CC Switch 只写入 `GOOGLE_GEMINI_BASE_URL` 与 `GEMINI_API_KEY`，不写鉴权方式。Gemini CLI 对自定义网关要求显式声明，否则报 `Invalid auth method selected`。在 `~/.gemini/settings.json` 里加：
+
+```json
+"security": {
+  "auth": { "selectedType": "gemini-api-key", "useExternal": true }
+}
+```
+
+## 三个 CLI 的免确认启动命令
+
+各 CLI 默认每次工具调用都要求人工确认，跑自动化或长时间任务时会被反复打断。需要连续执行时用下面这组参数（**会跳过所有权限确认，只在信任的项目目录里使用**）：
+
+```bash
+# Claude Code
+claude --dangerously-skip-permissions
+
+# Codex
+codex --dangerously-bypass-approvals-and-sandbox
+
+# Gemini CLI
+gemini --skip-trust --approval-mode yolo
+```
+
+关于 Gemini CLI 这一条：`--approval-mode yolo` 单独用**不够**。目录未被信任时，CLI 会把 approval mode 强制改回 `default` 并直接退出（提示 `Gemini CLI is not running in a trusted directory`）。必须同时给 `--skip-trust`，或设 `GEMINI_CLI_TRUST_WORKSPACE=true`：
+
+```bash
+GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo
+```
+
+另外，Gemini CLI 在非交互模式（`-p`）下默认只给只读工具；要写文件、跑命令同样需要 `--approval-mode yolo`。
+
 
 ## 支持哪些模型
 
@@ -203,6 +237,9 @@ curl https://yuzhideep.cn/v1/models -H "Authorization: Bearer $XIAODOU_API_KEY"
 | `POST /v1/chat/completions` | 对话补全 | 支持 `stream: true`（SSE）、多轮 `messages`、`tools` / `tool_choice`（模型支持时） |
 | `GET /v1/models` | 可用模型列表 | 返回当前令牌可访问的模型 ID |
 | `GET /v1/dashboard/billing/subscription` | 额度查询 | 兼容 OpenAI 计费查询形态，具体字段以实际返回为准 |
+| `POST /v1beta/models/{model}:generateContent` | Gemini 原生对话 | Gemini 协议，鉴权头用 `x-goog-api-key` |
+| `POST /v1beta/models/{model}:streamGenerateContent?alt=sse` | Gemini 原生流式 | 同上，SSE 返回 |
+| `GET /v1beta/models` | Gemini 模型列表 | 供 Gemini CLI / Google SDK 拉取 |
 
 请求体与 OpenAI Chat Completions 一致，常用字段：
 
@@ -220,6 +257,13 @@ curl https://yuzhideep.cn/v1/models -H "Authorization: Bearer $XIAODOU_API_KEY"
 
 ```http
 Authorization: Bearer sk-xxxxxxxx
+Content-Type: application/json
+```
+
+Gemini 原生协议改用 `x-goog-api-key` 头（与 Google SDK / Gemini CLI 一致）：
+
+```http
+x-goog-api-key: sk-xxxxxxxx
 Content-Type: application/json
 ```
 
@@ -346,13 +390,21 @@ console.log(resp.choices[0].message.content);
 
 Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 80 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. Chinese text starts at **CNY 0** (`hy4flash-free`, free tier) and paid Chinese text at **30% of the vendor list price**; overseas text starts at **0.49x of the official price** (`claude-opus-4.8`, official USD 5/25 → about CNY 1.80/9.00 per million tokens); image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
 
-The platform also supports **one-click import into CC Switch** for Claude Code and Codex: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. Gemini CLI is not supported because the gateway does not expose a native Gemini endpoint.
+The platform also supports **one-click import into CC Switch** for Claude Code, Codex and Gemini CLI: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. For Gemini CLI, point `GOOGLE_GEMINI_BASE_URL` at `https://yuzhideep.cn` **without** a `/v1beta` suffix (the CLI appends it), and add `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}` to `~/.gemini/settings.json`, otherwise it fails with `Invalid auth method selected`.
+
+To skip the interactive approval prompt in each CLI (only inside trusted project directories):
+
+```bash
+claude --dangerously-skip-permissions
+codex --dangerously-bypass-approvals-and-sandbox
+gemini --skip-trust --approval-mode yolo   # --approval-mode yolo alone is not enough
+```
 
 Docs: <https://www.xiaodouap.cn/llm-api/> ｜ English page: <https://yuzhideep.cn/en/> ｜ GitHub: <https://github.com/xiaodou-official/xiaodou-llm-api> ｜ Gitee: <https://gitee.com/lu-wulei/xiaodou-llm-api>
 
 ## 版本与许可
 
-- 文档版本：v1.4.0（2026-11-27 刷新公开价目与最低折扣模型：国产文本 ¥0 起、海外文本 0.49 折起、GPT 生图 ¥0.05/张、视频 ¥2.25/条起）。变更见 [CHANGELOG](./docs/changelog.md)。
+- 文档版本：v1.5.0（2026-11-28 新增 Gemini 原生端点、Gemini CLI 接入与三个 CLI 的免确认启动命令）。变更见 [CHANGELOG](./docs/changelog.md)。
 - 内容许可：**CC BY 4.0**（[LICENSE](./LICENSE)）；示例代码：**MIT**（[LICENSE-CODE](./LICENSE-CODE)）。
 - 发布参数与快照方式：见 [PUBLISHING.md](./PUBLISHING.md)。
 - 「小豆」「小豆AI大模型聚合」是宇智人工智能（深圳）有限公司的品牌；文档可整段引用，请保留出处链接。

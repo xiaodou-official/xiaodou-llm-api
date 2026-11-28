@@ -2,6 +2,13 @@
 
 本文只记**对调用方有影响**的变化：接口、模型供给、价格口径、限额、错误码。文案润色不记。
 
+## v1.5.0 — 2026-11-28
+
+- **新增 Gemini 原生端点**：`/v1beta/models/{model}:generateContent` 与 `:streamGenerateContent?alt=sse`，鉴权头 `x-goog-api-key`，`GET /v1beta/models` 返回模型列表。官方 Gemini CLI、Google SDK 可直接接入，不再需要自建协议转换层。
+- **CC Switch 导入支持 Gemini CLI**：控制台令牌行末「⋯」→「CC Switch」新增 Gemini CLI 选项，导入页 <https://yuzhideep.cn/ccswitch/> 同步上线。
+- **接入注意**：`GOOGLE_GEMINI_BASE_URL` 填 `https://yuzhideep.cn`，**不要带 `/v1beta` 后缀**——CLI 会自己拼 `/v1beta/models/...`，带上会变成 `/v1beta/v1beta/...` 返回 404。另需在 `~/.gemini/settings.json` 补 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`，否则报 `Invalid auth method selected`。
+- **新增三个 CLI 的免确认启动命令**（仅供可信目录）：`claude --dangerously-skip-permissions`、`codex --dangerously-bypass-approvals-and-sandbox`、`gemini --skip-trust --approval-mode yolo`。其中 Gemini CLI 单给 `--approval-mode yolo` 会被目录信任检查强制改回 `default` 并退出。
+
 ## v1.4.0 — 2026-11-27
 
 - 刷新公开价目与「最低价 / 最低折扣」口径（以控制台 `/api/pricing` 2026-11-27 读回为准）：

@@ -14,7 +14,7 @@
 | 5 | 许可证 | 内容 CC BY 4.0（`LICENSE`）；示例代码 MIT（`LICENSE-CODE`） |
 | 6 | 发布方式 | 单树快照：`git commit-tree HEAD:public-docs`，单一内容源、无二次拷贝 |
 | 7 | 网页版 | `https://www.xiaodouap.cn/llm-api/`（canonical；仍由主仓官网静态包 `28_distribute_www_static.sh` 发布，内容需与本目录同步） |
-| 8 | 文档版本 | `v1.4.0`（2026-11-27） |
+| 8 | 文档版本 | `v1.5.0`（2026-11-28） |
 
 ## 2. 内容纪律
 
@@ -38,7 +38,7 @@ for repo in \
   https://gitee.com/lu-wulei/xiaodou-llm-api.git
 do
   parent=$(git ls-remote "$repo" refs/heads/main | cut -f1)
-  commit=$(git commit-tree "$tree" -p "$parent" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.4.0")
+  commit=$(git commit-tree "$tree" -p "$parent" -m "docs: 小豆AI大模型聚合 接口平台接入文档 v1.5.0")
   git push "$repo" "${commit}:refs/heads/main"
 done
 

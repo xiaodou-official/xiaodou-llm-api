@@ -83,7 +83,20 @@ for await (const chunk of stream) process.stdout.write(chunk.choices[0]?.delta?.
 
 ## 第 5 步：导入 CC Switch（可选）
 
-用 Claude Code / Codex 的，可以在控制台「令牌 / API Keys」页点令牌行末「⋯」→「CC Switch」，选客户端与主模型后一键导入；也可以打开 <https://yuzhideep.cn/ccswitch/> 粘贴令牌生成 `ccswitch://` 链接。Key 只在浏览器本地拼接，不上传服务器。
+用 Claude Code / Codex / Gemini CLI 的，可以在控制台「令牌 / API Keys」页点令牌行末「⋯」→「CC Switch」，选客户端与主模型后一键导入；也可以打开 <https://yuzhideep.cn/ccswitch/> 粘贴令牌生成 `ccswitch://` 链接。Key 只在浏览器本地拼接，不上传服务器。
+
+Gemini CLI 两点注意：
+
+- 端点填 `https://yuzhideep.cn`，**不带 `/v1beta` 后缀**（CLI 会自己拼，带上会 404）。
+- 导入后要在 `~/.gemini/settings.json` 补 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`，否则报 `Invalid auth method selected`。
+
+需要跳过每个 CLI 的逐次确认（只在可信目录里用）：
+
+```bash
+claude --dangerously-skip-permissions
+codex --dangerously-bypass-approvals-and-sandbox
+gemini --skip-trust --approval-mode yolo   # 单给 --approval-mode yolo 会被目录信任检查挡下
+```
 
 ## 第 6 步：上线前检查清单
 
