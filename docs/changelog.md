@@ -2,6 +2,14 @@
 
 本文只记**对调用方有影响**的变化：接口、模型供给、价格口径、限额、错误码。文案润色不记。
 
+## v1.5.1 — 2026-11-28
+
+勘误 v1.5.0 的 Gemini CLI 接入说明，三处照着做会失败：
+
+- **`--skip-trust` 改为 `GEMINI_CLI_TRUST_WORKSPACE=true`**。CLI 加载 `~/.gemini/.env` 发生在解析命令行参数之前，`--skip-trust` 生效时该文件已按「未信任目录」规则跳过，于是 `GEMINI_API_KEY` / `GOOGLE_GEMINI_BASE_URL` 全部读不到，报 `Could not load the default credentials` 或弹窗要求重输 Key。v1.5.0 把这个组合写成了推荐写法。<br>正确写法：`GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo`，或把目录写进 `~/.gemini/trustedFolders.json` 的 `"TRUST_FOLDER"`。
+- **`selectedType` 必须是 `gemini-api-key`**。写成 `vertex-ai` 时 CLI 会忽略 `GEMINI_API_KEY`、改取 Google Application Default Credentials，报错与网络故障相似。CC Switch 导入后若鉴权方式不对，需在 `~/.gemini/settings.json` 手动改正。
+- **必须指定 `GEMINI_MODEL`**。CLI 内置默认模型（`gemini-2.5-pro`、`gemini-3.1-pro-preview-customtools`）本站没有渠道，返回 `503 model_not_found`。在 `~/.gemini/.env` 加 `GEMINI_MODEL=gemini-4-argon`（或本站任一 `gemini-*`）。
+
 ## v1.5.0 — 2026-11-28
 
 - **新增 Gemini 原生端点**：`/v1beta/models/{model}:generateContent` 与 `:streamGenerateContent?alt=sse`，鉴权头 `x-goog-api-key`，`GET /v1beta/models` 返回模型列表。官方 Gemini CLI、Google SDK 可直接接入，不再需要自建协议转换层。

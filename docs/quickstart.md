@@ -85,18 +85,21 @@ for await (const chunk of stream) process.stdout.write(chunk.choices[0]?.delta?.
 
 用 Claude Code / Codex / Gemini CLI 的，可以在控制台「令牌 / API Keys」页点令牌行末「⋯」→「CC Switch」，选客户端与主模型后一键导入；也可以打开 <https://yuzhideep.cn/ccswitch/> 粘贴令牌生成 `ccswitch://` 链接。Key 只在浏览器本地拼接，不上传服务器。
 
-Gemini CLI 两点注意：
+Gemini CLI 三点注意：
 
 - 端点填 `https://yuzhideep.cn`，**不带 `/v1beta` 后缀**（CLI 会自己拼，带上会 404）。
-- 导入后要在 `~/.gemini/settings.json` 补 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`，否则报 `Invalid auth method selected`。
+- 在 `~/.gemini/settings.json` 补 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`，否则报 `Invalid auth method selected`；写成 `vertex-ai` 则会忽略令牌、报 `Could not load the default credentials`。
+- 在 `~/.gemini/.env` 补 `GEMINI_MODEL=gemini-4-argon`（或本站其他 `gemini-*`）。CLI 的默认模型本站没有渠道，不指定会 `503 model_not_found`。
 
 需要跳过每个 CLI 的逐次确认（只在可信目录里用）：
 
 ```bash
 claude --dangerously-skip-permissions
 codex --dangerously-bypass-approvals-and-sandbox
-gemini --skip-trust --approval-mode yolo   # 单给 --approval-mode yolo 会被目录信任检查挡下
+GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo
 ```
+
+Gemini CLI 这条**别换成 `--skip-trust`**：CLI 加载 `~/.gemini/.env` 早于解析参数，`--skip-trust` 生效太晚，取值时目录仍算未信任，`.env` 被跳过，于是令牌读不到、报 `Could not load the default credentials`。
 
 ## 第 6 步：上线前检查清单
 

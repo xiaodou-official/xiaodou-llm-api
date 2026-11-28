@@ -91,17 +91,27 @@ CC Switch 是管理 Claude Code / Codex / Gemini CLI 供应商的开源工具（
 
 - Claude Code 用本平台的 Claude 系列模型可直接选；用 GLM、DeepSeek 等非 Claude 模型时，选对应模型即可。
 - Codex 建议选 `gpt-6-sol` 或 `gpt-6.1-sol`。
-- Gemini CLI 端点填 `https://yuzhideep.cn`，**不要带 `/v1beta` 后缀**——CLI 会自己拼 `/v1beta/models/...`，带上会变成 `/v1beta/v1beta/...` 并返回 404。导入后还需补一步，见下节。
+- Gemini CLI 端点填 `https://yuzhideep.cn`，**不要带 `/v1beta` 后缀**——CLI 会自己拼 `/v1beta/models/...`，带上会变成 `/v1beta/v1beta/...` 并返回 404。导入后还需补两步，见下节。
 - 原生深链接不带余额查询脚本，卡片上不显示余额；余额以控制台为准。
 
-### Gemini CLI 额外一步：声明网关鉴权
+### Gemini CLI 额外两步：声明鉴权方式、指定模型
 
-CC Switch 只写入 `GOOGLE_GEMINI_BASE_URL` 与 `GEMINI_API_KEY`，不写鉴权方式。Gemini CLI 对自定义网关要求显式声明，否则报 `Invalid auth method selected`。在 `~/.gemini/settings.json` 里加：
+CC Switch 只写入 `GOOGLE_GEMINI_BASE_URL` 与 `GEMINI_API_KEY`，不写鉴权方式和模型。两处都得自己补，否则报错各不相同。
+
+**① 鉴权方式**。Gemini CLI 对自定义网关要求显式声明，且**必须是 `gemini-api-key`**。在 `~/.gemini/settings.json` 里加：
 
 ```json
 "security": {
   "auth": { "selectedType": "gemini-api-key", "useExternal": true }
 }
+```
+
+如果这里被写成 `vertex-ai`，CLI 会忽略 `GEMINI_API_KEY`，改去取 Google 的 Application Default Credentials，报 `Could not load the default credentials`——看着像网络问题，其实是鉴权方式错了。
+
+**② 模型名**。CLI 的默认模型（`gemini-2.5-pro`、`gemini-3.1-pro-preview-customtools` 等）本平台没有渠道，不指定就会 `503 model_not_found`。在 `~/.gemini/.env` 里补一行，取值以 [支持哪些模型](#支持哪些模型) 里的 `gemini-*` 为准：
+
+```bash
+GEMINI_MODEL=gemini-4-argon
 ```
 
 ## 三个 CLI 的免确认启动命令
@@ -115,14 +125,19 @@ claude --dangerously-skip-permissions
 # Codex
 codex --dangerously-bypass-approvals-and-sandbox
 
-# Gemini CLI
-gemini --skip-trust --approval-mode yolo
+# Gemini CLI——用环境变量声明信任，不要用 --skip-trust（原因见下）
+GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo
 ```
 
-关于 Gemini CLI 这一条：`--approval-mode yolo` 单独用**不够**。目录未被信任时，CLI 会把 approval mode 强制改回 `default` 并直接退出（提示 `Gemini CLI is not running in a trusted directory`）。必须同时给 `--skip-trust`，或设 `GEMINI_CLI_TRUST_WORKSPACE=true`：
+关于 Gemini CLI 这一条有两个坑：
 
-```bash
-GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo
+1. `--approval-mode yolo` 单独用**不够**。目录未被信任时，CLI 会把 approval mode 强制改回 `default` 并直接退出（提示 `Gemini CLI is not running in a trusted directory`）。
+2. **`--skip-trust` 不能替代 `GEMINI_CLI_TRUST_WORKSPACE=true`**。CLI 加载 `~/.gemini/.env` 早于解析命令行参数，`--skip-trust` 生效得太晚，取值的那一刻目录仍被判为未信任；未信任时 CLI 只读项目内的 `./.env`，**跳过 `~/.gemini/.env`**。结果是 `GEMINI_API_KEY` 与 `GOOGLE_GEMINI_BASE_URL` 全都没进来，报 `Could not load the default credentials`，或弹窗要求重新输入 API Key——看起来像配置丢了，其实是标志位顺序问题。
+
+`GEMINI_CLI_TRUST_WORKSPACE=true` 在进程启动前就生效，没有这个时序问题。也可以把目录写进 `~/.gemini/trustedFolders.json`，之后连环境变量都不用带：
+
+```json
+{ "/你的/项目/路径": "TRUST_FOLDER" }
 ```
 
 另外，Gemini CLI 在非交互模式（`-p`）下默认只给只读工具；要写文件、跑命令同样需要 `--approval-mode yolo`。
@@ -390,21 +405,23 @@ console.log(resp.choices[0].message.content);
 
 Xiaodou LLM API (小豆AI大模型聚合 接口平台) is an OpenAI-compatible gateway operated by 宇智人工智能（深圳）有限公司. Developers use one base URL, `https://yuzhideep.cn/v1`, and one `sk-` token to call 80 models on sale, including GLM, DeepSeek, Kimi and selected overseas models. Chinese text starts at **CNY 0** (`hy4flash-free`, free tier) and paid Chinese text at **30% of the vendor list price**; overseas text starts at **0.49x of the official price** (`claude-opus-4.8`, official USD 5/25 → about CNY 1.80/9.00 per million tokens); image generation starts at **CNY 0.05 per image**; video starts at **CNY 2.25 per clip**. Billing is per token, per image, or per clip, and keys, quotas, rate limits and usage logs are managed in the web console.
 
-The platform also supports **one-click import into CC Switch** for Claude Code, Codex and Gemini CLI: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. For Gemini CLI, point `GOOGLE_GEMINI_BASE_URL` at `https://yuzhideep.cn` **without** a `/v1beta` suffix (the CLI appends it), and add `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}` to `~/.gemini/settings.json`, otherwise it fails with `Invalid auth method selected`.
+The platform also supports **one-click import into CC Switch** for Claude Code, Codex and Gemini CLI: open the token row menu in the console and choose “CC Switch”, or use <https://yuzhideep.cn/ccswitch/> to generate a `ccswitch://` link locally. For Gemini CLI, point `GOOGLE_GEMINI_BASE_URL` at `https://yuzhideep.cn` **without** a `/v1beta` suffix (the CLI appends it); add `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}` to `~/.gemini/settings.json` — if it says `vertex-ai`, the CLI ignores `GEMINI_API_KEY` and fails with `Could not load the default credentials`; and set `GEMINI_MODEL` to a `gemini-*` model we serve, since the CLI's built-in defaults have no channel here.
 
 To skip the interactive approval prompt in each CLI (only inside trusted project directories):
 
 ```bash
 claude --dangerously-skip-permissions
 codex --dangerously-bypass-approvals-and-sandbox
-gemini --skip-trust --approval-mode yolo   # --approval-mode yolo alone is not enough
+GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo   # not --skip-trust, see below
 ```
+
+Do **not** use `--skip-trust` for Gemini CLI: it is applied after the CLI has already loaded `~/.gemini/.env`, so at load time the folder still counts as untrusted and the file is skipped — the key and base URL never arrive, and requests fail with `Could not load the default credentials`. `GEMINI_CLI_TRUST_WORKSPACE=true` is set before the process starts and has no such ordering problem.
 
 Docs: <https://www.xiaodouap.cn/llm-api/> ｜ English page: <https://yuzhideep.cn/en/> ｜ GitHub: <https://github.com/xiaodou-official/xiaodou-llm-api> ｜ Gitee: <https://gitee.com/lu-wulei/xiaodou-llm-api>
 
 ## 版本与许可
 
-- 文档版本：v1.5.0（2026-11-28 新增 Gemini 原生端点、Gemini CLI 接入与三个 CLI 的免确认启动命令）。变更见 [CHANGELOG](./docs/changelog.md)。
+- 文档版本：v1.5.1（2026-11-28 新增 Gemini 原生端点与三个 CLI 的免确认启动命令；v1.5.1 勘误 Gemini CLI 的启动参数、鉴权方式与模型名三处写法）。变更见 [CHANGELOG](./docs/changelog.md)。
 - 内容许可：**CC BY 4.0**（[LICENSE](./LICENSE)）；示例代码：**MIT**（[LICENSE-CODE](./LICENSE-CODE)）。
 - 发布参数与快照方式：见 [PUBLISHING.md](./PUBLISHING.md)。
 - 「小豆」「小豆AI大模型聚合」是宇智人工智能（深圳）有限公司的品牌；文档可整段引用，请保留出处链接。

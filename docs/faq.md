@@ -28,10 +28,10 @@
 答：可以，但别改写请求头和路径，别在前端暴露令牌。多一层代理时注意关闭响应缓冲，否则流式会变成「一次性返回」。
 
 **问：Gemini CLI 能用吗？**
-答：能。平台提供 Gemini 原生端点 `https://yuzhideep.cn/v1beta`，鉴权头 `x-goog-api-key`。配 `GOOGLE_GEMINI_BASE_URL` 时填 `https://yuzhideep.cn`，**不要带 `/v1beta` 后缀**（CLI 会自己拼，带上会变成 `/v1beta/v1beta/` 返回 404）；并在 `~/.gemini/settings.json` 加 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`，否则报 `Invalid auth method selected`。
+答：能。平台提供 Gemini 原生端点 `https://yuzhideep.cn/v1beta`，鉴权头 `x-goog-api-key`。三处要配对：`GOOGLE_GEMINI_BASE_URL` 填 `https://yuzhideep.cn`，**不要带 `/v1beta` 后缀**（CLI 会自己拼，带上会变成 `/v1beta/v1beta/` 返回 404）；`~/.gemini/settings.json` 加 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`，写成 `vertex-ai` 会忽略令牌、改去取 Google 凭据并报 `Could not load the default credentials`；`~/.gemini/.env` 加 `GEMINI_MODEL=gemini-4-argon`，因为 CLI 内置的默认模型在本站没有渠道，不指定就 `503 model_not_found`。
 
 **问：几个 CLI 怎么跳过逐次权限确认？**
-答：`claude --dangerously-skip-permissions`、`codex --dangerously-bypass-approvals-and-sandbox`、`gemini --skip-trust --approval-mode yolo`。三条都会跳过全部确认，**只在你自己信任的项目目录里用**。Gemini CLI 注意：单给 `--approval-mode yolo` 不够，目录未受信任时会被强制改回 `default` 并退出，必须同时给 `--skip-trust` 或设 `GEMINI_CLI_TRUST_WORKSPACE=true`。
+答：`claude --dangerously-skip-permissions`、`codex --dangerously-bypass-approvals-and-sandbox`、`GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo`。三条都会跳过全部确认，**只在你自己信任的项目目录里用**。Gemini CLI 两处容易踩：单给 `--approval-mode yolo` 不够，目录未受信任时会被强制改回 `default` 并退出；而 `--skip-trust` **不能**用来修这个——它要等命令行解析后才生效，CLI 读 `~/.gemini/.env` 时目录仍判为未信任，该文件被跳过，令牌与端点都读不到，报 `Could not load the default credentials` 或弹窗要求重输 Key。要么用 `GEMINI_CLI_TRUST_WORKSPACE=true`，要么把目录写进 `~/.gemini/trustedFolders.json` 的 `"TRUST_FOLDER"`。
 
 ## 价格与账单
 

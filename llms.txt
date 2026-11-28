@@ -21,8 +21,8 @@
 ## 文档
 
 - **CC Switch 一键导入**：<https://yuzhideep.cn/ccswitch/>（Claude Code / Codex / Gemini CLI；也可在控制台令牌行末「⋯」→「CC Switch」直接导入）
-- **Gemini 原生端点**：`https://yuzhideep.cn/v1beta`，鉴权头 `x-goog-api-key`，支持 `generateContent` 与 `streamGenerateContent`，官方 Gemini CLI 可直接用。配 CLI 时 `GOOGLE_GEMINI_BASE_URL` 填 `https://yuzhideep.cn`（**不带 `/v1beta`**，CLI 自己会拼），并在 `~/.gemini/settings.json` 加 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`。
-- **免确认启动**：`claude --dangerously-skip-permissions`｜`codex --dangerously-bypass-approvals-and-sandbox`｜`gemini --skip-trust --approval-mode yolo`（只在可信目录用）。
+- **Gemini 原生端点**：`https://yuzhideep.cn/v1beta`，鉴权头 `x-goog-api-key`，支持 `generateContent` 与 `streamGenerateContent`，官方 Gemini CLI 可直接用。配 CLI 时 `GOOGLE_GEMINI_BASE_URL` 填 `https://yuzhideep.cn`（**不带 `/v1beta`**，CLI 自己会拼）；`~/.gemini/settings.json` 里 `"security": {"auth": {"selectedType": "gemini-api-key", "useExternal": true}}`（写成 `vertex-ai` 会忽略令牌并报 `Could not load the default credentials`）；`~/.gemini/.env` 里 `GEMINI_MODEL` 填本站有的 `gemini-*` 模型（CLI 默认模型在本站无渠道，会 503）。
+- **免确认启动**：`claude --dangerously-skip-permissions`｜`codex --dangerously-bypass-approvals-and-sandbox`｜`GEMINI_CLI_TRUST_WORKSPACE=true gemini --approval-mode yolo`（只在可信目录用）。Gemini CLI **别用 `--skip-trust`**：它在加载 `~/.gemini/.env` 之后才生效，取值时目录仍未信任，`.env` 被跳过、令牌读不到。
 - [README](./README.md)：完整接入文档（产品定义、快速开始、模型价格、接口、错误码、FAQ）。
 - [快速开始](./docs/quickstart.md)：从注册到第一条请求，10 分钟。
 - [接口参考](./docs/api-reference.md)：请求/响应字段、SSE、工具调用。
